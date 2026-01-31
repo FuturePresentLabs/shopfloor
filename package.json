@@ -1,0 +1,49 @@
+{
+  "name": "floor-plan-editor",
+  "version": "1.0.0",
+  "description": "Interactive floor plan editor with 2D/3D visualization using Three.js",
+  "type": "module",
+  "main": "dist/floor-plan-editor.js",
+  "scripts": {
+    "dev": "vite --port 3000",
+    "build": "vite build",
+    "preview": "vite preview --port 3000",
+    "start": "node server.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src --ext .js,.html",
+    "docker:build": "docker build -t floor-plan-editor .",
+    "docker:run": "docker run -p 8080:80 floor-plan-editor",
+    "docker:dev": "docker-compose up --build"
+  },
+  "keywords": [
+    "floor-plan",
+    "editor",
+    "3d",
+    "threejs",
+    "architecture",
+    "cad"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@vitejs/plugin-legacy": "^5.4.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-html": "^8.0.0",
+    "happy-dom": "^14.0.0",
+    "terser": "^5.31.0",
+    "vite": "^5.4.0",
+    "vite-plugin-html": "^3.2.2",
+    "vite-plugin-singlefile": "^2.0.0",
+    "vitest": "^2.0.0"
+  },
+  "dependencies": {
+    "express": "^4.19.0",
+    "compression": "^1.7.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
