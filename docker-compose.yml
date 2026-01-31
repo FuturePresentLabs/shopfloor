@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  # Production service using nginx
+  floor-plan-editor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: floor-plan-editor:latest
+    container_name: floor-plan-editor
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 32M
+
+  # Development service with hot reload
+  floor-plan-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: floor-plan-editor:dev
+    container_name: floor-plan-editor-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev -- --host 0.0.0.0
+    profiles:
+      - dev
+
+  # Node.js production server (alternative to nginx)
+  floor-plan-node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: node-production
+    image: floor-plan-editor:node
+    container_name: floor-plan-editor-node
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    profiles:
+      - node
+
+networks:
+  default:
+    driver: bridge
