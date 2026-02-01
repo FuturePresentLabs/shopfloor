@@ -50,9 +50,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy built files from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Also copy the original HTML as fallback
-COPY floor-plan-editor.html /usr/share/nginx/html/
-
 # Create non-root user for security
 RUN addgroup -g 1001 -S appgroup && \
     adduser -u 1001 -S appuser -G appgroup && \
@@ -86,7 +83,6 @@ RUN npm ci --omit=dev
 # Copy server and built files
 COPY server.js ./
 COPY --from=builder /app/dist ./dist
-COPY floor-plan-editor.html ./dist/
 
 # Create non-root user
 RUN addgroup -g 1001 -S appgroup && \

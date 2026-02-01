@@ -2,13 +2,17 @@ import { defineConfig } from 'vite';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import { viteSingleFile } from 'vite-plugin-singlefile';
 import legacy from '@vitejs/plugin-legacy';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-  root: '.',
-  publicDir: 'public',
+  root: 'src',
+  publicDir: '../public',
 
   build: {
-    outDir: 'dist',
+    outDir: '../dist',
     emptyOutDir: true,
     minify: 'terser',
     terserOptions: {
@@ -19,7 +23,7 @@ export default defineConfig({
     },
     rollupOptions: {
       input: {
-        main: 'floor-plan-editor.html'
+        main: resolve(__dirname, 'src/index.html')
       },
       output: {
         entryFileNames: 'assets/[name]-[hash].js',
